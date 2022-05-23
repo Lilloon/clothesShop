@@ -1,0 +1,47 @@
+.cardWrapper {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 100px;
+  background-color: white;
+  padding: 30px;
+  font-size: 32px;
+  text-transform: capitalize;
+  font-weight: 300;
+  margin-bottom: 50px;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  transition: 0.2s ease-in-out;
+  cursor: pointer;
+  &:hover {
+    transform:scale(1.03);
+  }
+}
+
+.content {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.childs {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  border-top: 2px solid cadetblue;
+  margin-top: 20px;
+  padding-top: 20px;
+}
+
+.circle {
+  transition: 0.2s ease-in-out;
+  border-radius: 100px;
+  background-color: lightblue;
+  width: 55px;
+  height: 55px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  &.selected {
+    border: 5px solid cadetblue;
+  }
+}

@@ -1,0 +1,29 @@
+.button {
+  margin-top: 20px;
+  width: 100%;
+  max-width: 320px;
+  height: 35px;
+  border: 1px solid lightblue;
+  transition: 0.25s ease;
+  border-radius: 25px;
+  background-color: white;
+  margin-bottom: 20px;
+  font-size: 22px;
+  font-weight: 300;
+  &:hover {
+    border-color: #00BCD4;
+    background-color: lightblue;
+  }
+  &:focus {
+    border-color:#00838F;
+    background-color: #00BCD4;
+  }
+  &.disabled {
+    background-color: rgb(197, 197, 197);
+    border: 1px solid rgb(197, 197, 197); 
+    font-weight: 300;
+  }
+}
+
+button {
+}

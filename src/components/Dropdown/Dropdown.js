@@ -10,6 +10,7 @@ const Dropdown = ({
   items = [],
   multiSelect = false,
   Block = false,
+  setSelected,
 }) => {
   const [open, setOpen] = useState(false);
   const [selection, setSelection] = useState([]);
@@ -18,10 +19,10 @@ const Dropdown = ({
   const close = () => setOpen(false);
   function handleOnClick(item) {
     if (!selection.some((current) => current.id === item.id)) {
-      console.log(open);
       if (!multiSelect) {
         setSelection([item]);
         setValue(item.value);
+        setSelected(title, { value: item.value, id: item.id });
         close();
       } else {
         setSelection([...selection, item]);

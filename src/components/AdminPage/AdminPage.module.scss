@@ -1,0 +1,22 @@
+.plus {
+  margin-left: 25px;
+  font-size: 40px;
+  border: 1px solid black;
+  padding: 0 12px;
+  padding-bottom: 4px;
+  line-height: 40px;
+  border-radius: 30px;
+  width: max-content;
+  transition: 0.25s ease;
+  cursor: pointer;
+  &:hover {
+    color: gray;
+  border-color: gray;
+  transform: scale(1.05);
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+}

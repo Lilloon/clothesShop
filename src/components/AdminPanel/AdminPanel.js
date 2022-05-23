@@ -1,12 +1,13 @@
 import React from "react";
 import classes from "./AdminPanel.module.scss";
-import AddForm from "../AddForm/AddForm";
+import AdminPage from "../AdminPage/AdminPage";
+import LoginForm from "../LoginForm/LoginForm";
 
 const AdminPanel = () => {
   return (
     <div className={classes.wrapper}>
-      <AddForm category={"product"} />
-      <AddForm category={"material"} />
+      <LoginForm />
+      <AdminPage category={"employers"} />
     </div>
   );
 };

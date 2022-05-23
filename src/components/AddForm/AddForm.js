@@ -2,20 +2,39 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Input from "../Input/Input";
 import Dropdown from "../Dropdown/Dropdown";
+import Button from "../Button/Button";
+import { translate } from "../../locales/ru";
 
-const AddForm = ({ category }) => {
+const AddForm = ({ category = "", refreshTable = () => {} }) => {
   const [fields, setFields] = useState([]);
   const [values, setValues] = useState({});
   const [additionalItems, setAdditionalItems] = useState({});
 
-  useEffect(async () => {
-    const result = await axios.get(
-      `http://localhost:5000/api/category?category=${category}`
-    );
-    setFields(result.data.fields || []);
-    setAdditionalItems(result.data.additionalItems);
+  useEffect(() => {
+    async function fetchData() {
+      const result = await axios.get(
+        `http://localhost:5000/api/category?category=${category}`
+      );
+      setFields(result.data.fields || []);
+      setAdditionalItems(result.data.additionalItems);
+    }
+    fetchData();
   }, []);
 
+  const sendNew = async () => {
+    const result = await axios.post(
+      `http://localhost:5000/api/addItem?category=${category}`,
+      {
+        ...values,
+      }
+    );
+    const tempValues = JSON.parse(JSON.stringify(values));
+    fields.forEach((item) => {
+      tempValues[item.name] = "";
+    });
+    setValues(tempValues);
+    refreshTable();
+  };
   useEffect(() => {
     if (fields.length) {
       fields.forEach((item) => {
@@ -25,7 +44,6 @@ const AddForm = ({ category }) => {
       });
     }
   }, [fields]);
-  console.log(fields);
   const onChange = (field, value) => {
     const tempValues = { ...values };
     tempValues[field] = value;
@@ -33,22 +51,23 @@ const AddForm = ({ category }) => {
   };
   return (
     <>
-      <h1>{category}</h1>
       {fields.map((item) => (
         <Input
           key={item.name}
           name={item.name}
+          placeholder={translate[item.name]}
           onChange={onChange}
           value={values[item.name]}
-          type={item.format}
         />
       ))}
       {additionalItems && (
         <Dropdown
           items={additionalItems.values}
           title={additionalItems.field}
+          setSelected={onChange}
         />
       )}
+      <Button category={category} onClick={sendNew} />
     </>
   );
 };
