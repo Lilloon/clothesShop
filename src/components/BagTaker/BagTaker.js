@@ -24,7 +24,8 @@ const BagTaker = () => {
             },
           }
         );
-        console.log(result);
+        dispatch(setMiniCart(result.data));
+        setBagLS(result.data.id_bag);
       }
       if (!bagLS && user?.id_client) {
         try {
@@ -39,11 +40,13 @@ const BagTaker = () => {
           const { data } = result;
           if (data) {
             dispatch(setMiniCart(data));
+            setBagLS(data.id_bag);
           } else {
             const createdBag = await axios.post(
               `http://localhost:5000/api/createBag?id_client=${user.id_client}`
             );
-            setBagLS(createdBag.data);
+            dispatch(setMiniCart(createdBag.data));
+            setBagLS(createdBag.data.id_bag);
           }
         } catch (error) {
           console.log(error);

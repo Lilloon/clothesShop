@@ -47,9 +47,17 @@ const HeaderDrop = () => {
           {hovered && (
             <div className={styles.list}>
               <ul>
-                <li>Личный кабинет</li>
-                {isEmployer && <li>Панель упарвления</li>}
-                <li onClick={logout}>Выйти</li>
+                <li>
+                  <Link to={"/cabinet"}>Личный кабинет</Link>
+                </li>
+                {isEmployer && (
+                  <li>
+                    <p>Панель упарвления</p>
+                  </li>
+                )}
+                <li onClick={logout}>
+                  <p>Выйти</p>
+                </li>
               </ul>
             </div>
           )}

@@ -2,12 +2,16 @@ import React, { useEffect, useState } from "react";
 import styles from "./ProductCard.module.scss";
 import axios from "axios";
 import Button from "../Button/Button";
+import { useDispatch, useSelector } from "react-redux";
+import { setMiniCart } from "../../actions/miniCartActions";
 
 const ProductCard = ({ product }) => {
   const [active, setActive] = useState(false);
   const [childs, setChilds] = useState([]);
   const [selected, setSelected] = useState("");
-
+  const { miniCart } = useSelector((state) => state.miniCartReducer);
+  const { id_bag } = miniCart;
+  const dispatch = useDispatch();
   useEffect(() => {
     const FetchChilds = async () => {
       const result = await axios.get(
@@ -30,6 +34,20 @@ const ProductCard = ({ product }) => {
       return;
     }
     setSelected(id);
+  };
+  const addItemToBag = async () => {
+    await axios.post("http://localhost:5000/api/addItemToBag", {
+      selected,
+      id_bag,
+      qty: 1,
+      id_parent: product.id_product,
+    });
+    const newBag = await axios.get("http://localhost:5000/api/getBagByBagId", {
+      params: {
+        id_bag,
+      },
+    });
+    dispatch(setMiniCart(newBag.data));
   };
   return (
     <div className={styles.cardWrapper}>
@@ -56,7 +74,11 @@ const ProductCard = ({ product }) => {
               {item.size}
             </div>
           ))}
-          <Button text="В корзину" disabled={selected ? false : true} />
+          <Button
+            onClick={addItemToBag}
+            text="В корзину"
+            disabled={selected ? false : true}
+          />
         </div>
       )}
     </div>

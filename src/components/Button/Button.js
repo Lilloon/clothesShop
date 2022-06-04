@@ -11,7 +11,9 @@ const Button = ({ onClick, category, text = "добавить", disabled = false
       className={`${styles.button} ${disabled ? styles.disabled : ""}`}
       onKeyPress={onEnterPressed}
       onClick={() => {
-        onClick(category);
+        if (!disabled) {
+          onClick(category);
+        }
       }}
     >
       {text}

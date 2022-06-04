@@ -2,21 +2,24 @@
   width: 80%;
   display: flex;
   justify-content: space-between;
-
-}
-
-a {
-  transition: 0.2s ease;
-  color: black;
-  text-decoration: none;
-  border-bottom: 1px solid black;
-  font-size: 18px;
-  font-weight: 300;
-  &:hover {
-    border-bottom-color: transparent;
-    transform: scale(1.1);
+  & p, a {
+    margin: 0;
+    padding: 0;
+    transition: 0.2s ease;
+    color: black;
+    text-decoration: none;
+    border-bottom: 1px solid black;
+    font-size: 18px;
+    font-weight: 300;
+    &:hover {
+      border-bottom-color: transparent;
+      transform: scale(1.1);
+    }
   }
+
 }
+
+
 
 .wrapper {
   display: flex;
@@ -24,6 +27,7 @@ a {
   position: relative;
   width: 250px;
   max-width: 320px;
+  
 }
 
 .title {
@@ -56,6 +60,20 @@ a {
   width: 100%;
   background-color: white;
   border: 1px solid black;
+  & p, a {
+    margin: 0;
+    padding: 0;
+    transition: 0.2s ease;
+    color: black;
+    text-decoration: none;
+    border-bottom: 1px solid black;
+    font-size: 18px;
+    font-weight: 300;
+    &:hover {
+      border-bottom-color: transparent;
+      transform: scale(1.1);
+    }
+  }
 }
 
 

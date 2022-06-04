@@ -1,8 +1,13 @@
 header {
   position: fixed;
+  z-index: 100;
   height: 100px;
   width: 100%;
   background-color: white;
+  & a {
+    text-decoration: none;
+    color: black;
+  }
 }
 
 .wrapper {
@@ -16,3 +21,4 @@ header {
 .rightSide {
   display: flex;
 }
+

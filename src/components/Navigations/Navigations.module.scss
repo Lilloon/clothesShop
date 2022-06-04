@@ -1,0 +1,25 @@
+.navItem {
+  margin:0;
+  margin-bottom: 7px;
+  box-sizing: border-box ;
+  padding: 10px 30px;
+  border: 2px solid lightblue;
+  border-radius: 20px;
+  transition: 0.2s ease-in-out;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  &:hover {
+    border: 2px solid #00BCD4;
+  }
+  &.selected {
+    background-color: #d0f7fc;
+  }
+}
+
+.list {
+  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+}

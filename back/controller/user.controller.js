@@ -47,6 +47,74 @@ class UserController {
     res.send("bad :(");
     return;
   }
+
+  async getOrders(req, res) {
+    const { query } = req;
+    const { id_client } = query;
+    const orders = await pg.query(
+      `SELECT * FROM "order" WHERE id_client='${id_client}'`
+    );
+    const ordersRows = orders.rows;
+    const promises = ordersRows.map(
+      async (item) =>
+        await pg.query(
+          `SELECT total_price from bag where id_bag='${item.id_bag}'`
+        )
+    );
+    const bagsPrices = await Promise.all(promises);
+    const ordersWithPrices = ordersRows.map((item, index) => ({
+      ...item,
+      total_price: bagsPrices[index].rows[0].total_price,
+    }));
+    res.send(200, { orders: ordersWithPrices });
+  }
+  async getOrderDetails(req, res) {
+    const { query } = req;
+    const { id_order } = query;
+    const order = await pg.query(
+      `SELECT * from "order" WHERE id_order='${id_order}'`
+    );
+    const [orderRow] = order.rows;
+    const { id_bag } = orderRow;
+    const bag = await pg.query(`SELECT * from bag WHERE id_bag='${id_bag}'`);
+    const [bagRow] = bag.rows;
+
+    const childs = await pg.query(
+      `SELECT * FROM bag_composition WHERE id_bag='${id_bag}'`
+    );
+
+    console.log(childs.rows);
+
+    const childsPromises = childs.rows.map(async (item) => {
+      const childPromise = await pg.query(
+        `SELECT * FROM child_product where id_child = '${item.id_child}'`
+      );
+      return childPromise.rows;
+    });
+
+    const childsArr = await Promise.all(childsPromises);
+    const parentsPromises = childsArr.map(async (item) => {
+      const parentPromise = await pg.query(
+        `SELECT * FROM parent_product where id_product = '${item[0].id_parent}'`
+      );
+      return parentPromise.rows;
+    });
+    const parentsArr = await Promise.all(parentsPromises);
+    console.log(parentsArr);
+
+    const items = childs.rows.map((item, index) => {
+      return {
+        amount: item.qty,
+        product_name: parentsArr[index][0].product_name,
+        cost: item.qty * parentsArr[index][0].price,
+        size: childsArr[index][0].size,
+        id_child: childsArr[index][0].id_child,
+      };
+    });
+
+    res.send(200, { ...orderRow, ...bagRow, items });
+    return;
+  }
 }
 
 export default new UserController();

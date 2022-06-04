@@ -1,0 +1,18 @@
+.orderDetails {
+  width: 100%;
+  max-width: 1000px;
+  height: 100vh;
+  background-color: rgb(247, 251, 255);
+  border-left: 2px solid rgb(231, 231, 231);
+  border-right: 2px solid rgb(231, 231, 231);
+  padding: 30px 40px;
+  & h1 {
+    margin: 0;
+    padding-top: 20px;
+    text-transform: uppercase;
+    font-weight: 600;
+    & span {
+      font-weight: 400;
+    }
+  }
+}
