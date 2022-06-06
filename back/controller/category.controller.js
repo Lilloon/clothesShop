@@ -20,7 +20,9 @@ const additionalCategoties = {
 class CategoryController {
   async getAvaliableCategories(req, res) {}
   async getCategoryPage(req, res) {
-    const categoryItems = await pg.query(`SELECT * FROM ${req.query.category}`);
+    const categoryItems = await pg.query(
+      `SELECT * FROM "${req.query.category}"`
+    );
     let additionalItems;
     if (additionalCategoties[req.query.category]) {
       additionalItems = await pg.query(
@@ -168,7 +170,9 @@ class CategoryController {
     }
   }
   async getData(req, res) {
-    const categoryItems = await pg.query(`SELECT * FROM ${req.query.category}`);
+    const categoryItems = await pg.query(
+      `SELECT * FROM "${req.query.category}"`
+    );
     let { rows, fields } = categoryItems;
     if (req.query.category === "child_product") {
       fields = [{ name: "product_name" }, ...fields];

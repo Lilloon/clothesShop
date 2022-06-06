@@ -18,30 +18,56 @@ const AdminPage = ({ category }) => {
       setData(result.data.items || [[]]);
     }
     fetchData();
-  }, []);
+    setIsEditing(false);
+  }, [category]);
 
   const refreshTable = async () => {
     const result = await axios.get(
       `http://localhost:5000/api/getData?category=${category}`
     );
-    setFields(result.data.fields || []);
-    setData(result.data.items || [[]]);
+    setFields([...result.data.fields] || []);
+    setData(JSON.parse(JSON.stringify(result.data.items)) || [[]]);
   };
+
+  // const onDelete = async ({ row }) => {
+  //   let additionalId = null;
+  //   if (category === "parent_product") {
+  //     additionalId = "id_product";
+  //   }
+  //   let mainIdIndex = null;
+  //   fields.forEach((item, index) => {
+  //     if (
+  //       `id_${category}`.includes(item.name) ||
+  //       additionalId.includes(item.name)
+  //     )
+  //       mainIdIndex = index;
+  //   });
+  //   await axios.delete('http://localhost:5000/api/deleteCategoryItem', {params: {}})
+  // };
+
+  useEffect(() => {}, [data]);
   return (
     <>
       <div className={classes.header}>
         <h1>{translate[category]}</h1>
-        <div
-          className={classes.plus}
-          onClick={() => {
-            setIsEditing(!isEditing);
-          }}
-        >
-          +
-        </div>
+        {category !== "order" && (
+          <div
+            className={classes.plus}
+            onClick={() => {
+              setIsEditing(!isEditing);
+            }}
+          >
+            +
+          </div>
+        )}
       </div>
       {isEditing && <AddForm category={category} refreshTable={refreshTable} />}
-      <Table fields={fields} items={data} />
+      <Table
+        // onDelete={onDelete}
+        refreshTable={refreshTable}
+        fields={fields}
+        items={data}
+      />
     </>
   );
 };

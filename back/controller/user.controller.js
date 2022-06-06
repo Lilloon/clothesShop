@@ -52,13 +52,13 @@ class UserController {
     const { query } = req;
     const { id_client } = query;
     const orders = await pg.query(
-      `SELECT * FROM "order" WHERE id_client='${id_client}'`
+      `SELECT * FROM "order" WHERE id_client='${id_client}' order by order_creation_date`
     );
     const ordersRows = orders.rows;
     const promises = ordersRows.map(
       async (item) =>
         await pg.query(
-          `SELECT total_price from bag where id_bag='${item.id_bag}'`
+          `SELECT total_price from bag where id_bag='${item.id_bag}' `
         )
     );
     const bagsPrices = await Promise.all(promises);
@@ -66,7 +66,7 @@ class UserController {
       ...item,
       total_price: bagsPrices[index].rows[0].total_price,
     }));
-    res.send(200, { orders: ordersWithPrices });
+    res.send(200, { orders: ordersWithPrices.reverse() });
   }
   async getOrderDetails(req, res) {
     const { query } = req;
@@ -82,8 +82,6 @@ class UserController {
     const childs = await pg.query(
       `SELECT * FROM bag_composition WHERE id_bag='${id_bag}'`
     );
-
-    console.log(childs.rows);
 
     const childsPromises = childs.rows.map(async (item) => {
       const childPromise = await pg.query(

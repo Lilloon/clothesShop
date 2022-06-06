@@ -1,9 +1,9 @@
 *{
-  box-sizing: border-box;
 }
 
 
 .dd_wrapper {  
+  box-sizing: border-box;
     width: 100%;
     display: flex;       
       flex-direction: column;
@@ -54,7 +54,7 @@
     
     }
   
-li {
+.lishka {
   margin: 0;
   padding: 0;
   height: 44px;  
@@ -82,11 +82,10 @@ button {
   text-align: left;
   &.Selected{
     cursor: pointer;
-    
   }
 }
 
-:hover {
+& :hover {
   transition: 0.3s ease;
   cursor: pointer;
   background-color: lightblue;

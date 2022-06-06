@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./Navigations.module.scss";
-import { Link } from "react-router-dom";
+import { translate } from "../../locales/ru";
 
 const Navigations = ({ items = [], onClick = () => {}, selected = false }) => {
   return (
@@ -15,7 +15,7 @@ const Navigations = ({ items = [], onClick = () => {}, selected = false }) => {
             onClick(item.id);
           }}
         >
-          {item.name}
+          {translate[item.name] || item.name}
         </p>
       ))}
     </div>

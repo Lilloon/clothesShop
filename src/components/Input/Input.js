@@ -3,9 +3,9 @@ import classes from "./Input.module.scss";
 
 const Input = ({
   type = "default",
-  name,
+  name = "",
   value = "",
-  onChange,
+  onChange = () => {},
   placeholder = "",
 }) => {
   const onChangeInput = (e) => {

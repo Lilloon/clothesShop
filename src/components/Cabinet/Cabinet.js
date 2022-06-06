@@ -29,8 +29,9 @@ const Cabinet = () => {
   useEffect(() => {
     if (!category) {
       navigate("/cabinet/about");
+      setSelected(1);
     }
-  }, []);
+  }, [category]);
   const getCurr = () => {
     if (category) {
       const cur = cabinetItems.find((item) => item.path === category);

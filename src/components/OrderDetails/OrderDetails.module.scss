@@ -10,9 +10,30 @@
     margin: 0;
     padding-top: 20px;
     text-transform: uppercase;
-    font-weight: 600;
+    font-weight: 500;
     & span {
-      font-weight: 400;
+      font-weight: 300;
     }
+  }
+  & table {
+    margin-top: 20px;
+  }
+}
+
+.rightAllign {
+  width: 100%;
+  & h1 {
+    display: flex;
+    justify-content: end;
+  }
+}
+
+.back {
+  cursor: pointer;
+  font-weight: 900;
+  text-decoration: underline;
+  transition: 0.2s ease-in-out;
+  &:hover {
+    text-decoration: none;
   }
 }

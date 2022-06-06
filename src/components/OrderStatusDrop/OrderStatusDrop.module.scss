@@ -1,0 +1,24 @@
+.wrapper {
+  position: relative;
+}
+
+.list {
+  position: absolute;
+  background-color: white;
+  border: 1px solid black;
+  width: 100%;
+  z-index: 100;
+}
+
+.item {
+  transition: 0.15s ease-in-out;
+  padding: 5px;
+  box-sizing: border-box;
+  min-height: 30px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  &:hover {
+    background-color: rgb(216, 216, 216);
+  }
+}

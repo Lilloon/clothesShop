@@ -86,7 +86,7 @@ const Dropdown = ({
           <ul className={styles.dd_list}>
             {items.map((item) => (
               <li
-                className={`${styles.dd_list_item} ${
+                className={`${styles.lishka} ${styles.dd_list_item} ${
                   isItemInSelection(item) && styles.Selected
                 }`}
                 key={item.id}

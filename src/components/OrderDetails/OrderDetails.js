@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import styles from "./OrderDetails.module.scss";
-import Table from "../Table/Table";
 
 const normalizeDateStr = (str) => (str.toString().length < 2 ? `0${str}` : str);
 
@@ -13,7 +12,7 @@ const OrderDetails = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.userReducer);
-  const { first_name, second_name, middle_name } = user;
+  const { first_name, second_name, middle_name, address } = user;
   const [orderDetails, setOrderDetails] = useState({});
   const {
     items = [],
@@ -47,7 +46,9 @@ const OrderDetails = () => {
   };
   return (
     <div className={styles.orderDetails}>
-      <span onClick={back}>НАЗАД</span>
+      <span className={styles.back} onClick={back}>
+        НАЗАД
+      </span>
       <h1>
         номер заказа: <span>{id_order}</span>
       </h1>
@@ -56,6 +57,9 @@ const OrderDetails = () => {
         <span>
           {second_name} {first_name} {middle_name}
         </span>
+      </h1>
+      <h1>
+        адрес доставки: <span>{address}</span>
       </h1>
       <h1>
         статус заказа: <span>{order_status}</span>
@@ -87,6 +91,14 @@ const OrderDetails = () => {
           })}
         </tbody>
       </table>
+      <div className={styles.rightAllign}>
+        <h1>
+          Общее кол-во: <span>{amount}</span>
+        </h1>
+        <h1>
+          сумма заказа: <span>{total_price} рублей</span>
+        </h1>
+      </div>
     </div>
   );
 };
