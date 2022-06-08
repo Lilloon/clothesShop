@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Table.module.scss";
+import { Navigate } from "react-router-dom";
 import { translate } from "../../locales/ru";
 import OrderStatusDrop from "../OrderStatusDrop/OrderStatusDrop";
 
@@ -12,6 +13,7 @@ const statuses = [
 ];
 
 const Table = ({
+  category = "",
   fields = [[]],
   items = [[]],
   refreshTable = () => {},

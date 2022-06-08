@@ -8,7 +8,7 @@ import { translate } from "../../locales/ru";
 const AddForm = ({ category = "", refreshTable = () => {} }) => {
   const [fields, setFields] = useState([]);
   const [values, setValues] = useState({});
-  const [additionalItems, setAdditionalItems] = useState({});
+  const [additionalItems, setAdditionalItems] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
@@ -20,7 +20,6 @@ const AddForm = ({ category = "", refreshTable = () => {} }) => {
     }
     fetchData();
   }, []);
-
   const sendNew = async () => {
     const result = await axios.post(
       `http://localhost:5000/api/addItem?category=${category}`,
@@ -60,13 +59,14 @@ const AddForm = ({ category = "", refreshTable = () => {} }) => {
           value={values[item.name]}
         />
       ))}
-      {additionalItems && (
-        <Dropdown
-          items={additionalItems.values}
-          title={additionalItems.field}
-          setSelected={onChange}
-        />
-      )}
+      {additionalItems[0] &&
+        additionalItems.map((item) => (
+          <Dropdown
+            items={item.values}
+            title={item.field}
+            setSelected={onChange}
+          />
+        ))}
       <Button category={category} onClick={sendNew} />
     </>
   );

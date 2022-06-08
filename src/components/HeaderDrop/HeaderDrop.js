@@ -52,7 +52,7 @@ const HeaderDrop = () => {
                 </li>
                 {isEmployer && (
                   <li>
-                    <Link to="/admin">Панель упарвления</Link>
+                    <Link to="/admin">Панель управления</Link>
                   </li>
                 )}
                 <li onClick={logout}>

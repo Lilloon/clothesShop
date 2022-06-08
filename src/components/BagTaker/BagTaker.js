@@ -15,7 +15,6 @@ const BagTaker = () => {
     if (isAuth && !setted) {
       setSetted(true);
       if (bagLS) {
-        console.log(bagLS, "bag");
         const result = await axios.get(
           "http://localhost:5000/api/getBagByBagId",
           {

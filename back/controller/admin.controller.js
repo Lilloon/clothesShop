@@ -34,7 +34,6 @@ class AdminController {
 
   async updateOrderStatus(req, res) {
     const { body } = req;
-    console.log(body);
     const { id_order, text } = body;
     await pg.query(
       `UPDATE "order" SET order_status=$1 WHERE id_order='${id_order}' `,

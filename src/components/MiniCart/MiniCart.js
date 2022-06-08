@@ -57,7 +57,7 @@ const MiniCart = () => {
       }}
     >
       <img src={icon} />
-      <div className={styles.circle}>{miniCart.amount}</div>
+      <div className={styles.circle}>{miniCart.amount || 0}</div>
       {open && (
         <div className={styles.drop}>
           <div className={styles.items}>

@@ -167,10 +167,6 @@ class BagController {
     );
     const oldBag = oldBagQuery.rows[0];
     const { amount: oldQty, total_price: old_total_price } = oldBag;
-    console.log(
-      Number(old_total_price) - Number(cost),
-      Number(oldQty) - Number(amount)
-    );
     await pg.query(`UPDATE bag SET amount=$1 WHERE id_bag='${id_bag}'`, [
       Number(oldQty) - Number(amount),
     ]);

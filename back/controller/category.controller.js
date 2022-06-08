@@ -15,10 +15,13 @@ const additionalCategoties = {
     table: "roles",
     fields: ["id_role", "role_name"],
   },
+  purchase_invoise: {
+    table: "contractor",
+    fields: ["id_contractor", "name"],
+  },
 };
 
 class CategoryController {
-  async getAvaliableCategories(req, res) {}
   async getCategoryPage(req, res) {
     const categoryItems = await pg.query(
       `SELECT * FROM "${req.query.category}"`
@@ -41,16 +44,46 @@ class CategoryController {
       }
       return !item.name.includes("id_");
     });
+    if (req.query.category === "purchase_invoise") {
+      const materialsQuery = await pg.query(`SELECT * FROM material`);
+      let material = materialsQuery.rows.map((item) => {
+        return {
+          id: item.id_material,
+          value: item.material_name,
+        };
+      });
+      material = await Promise.all(material);
+      res.send({
+        items: categoryItems.rows,
+        fields: [{ name: "warehouse_manager" }, { name: "amount" }],
+        additionalItems: additionalCategoties[req.query.category]
+          ? [
+              {
+                field: additionalCategoties[req.query.category].table,
+                values: additionalItems,
+              },
+              {
+                field: "material",
+                values: material,
+              },
+            ]
+          : [null],
+      });
+      return;
+    }
     res.send({
       items: categoryItems.rows,
       fields: fieldsWithoutId,
       additionalItems: additionalCategoties[req.query.category]
-        ? {
-            field: additionalCategoties[req.query.category].table,
-            values: additionalItems,
-          }
-        : null,
+        ? [
+            {
+              field: additionalCategoties[req.query.category].table,
+              values: additionalItems,
+            },
+          ]
+        : [null],
     });
+    return;
   }
 
   async addItem(req, res) {
@@ -60,7 +93,6 @@ class CategoryController {
     const bodyArr = Object.entries(body);
     bodyArr.forEach((item) => {
       const [key, value] = item;
-      console.log(!value);
       if (!value) {
         notFilledFlag = true;
       }
@@ -106,7 +138,6 @@ class CategoryController {
             `INSERT INTO employers (name, surname, password, id_role, id_employer, phone_number) VALUES ($1, $2, $3,$4, $5, $6)`,
             [name, surname, password, roles.id, id_employer, phone_number]
           );
-          console.log(body);
           res.send(200);
         }
         break;
@@ -143,7 +174,6 @@ class CategoryController {
           );
           if (existingChildArr.length) {
             const [existingChild] = existingChildArr;
-            console.log(existingChild);
             pg.query(
               `UPDATE child_product SET amount=$1 WHERE id_child='${existingChild.id_child}' AND size='${existingChild.size}'`,
               [Number(amount) + Number(existingChild.amount)]
@@ -162,6 +192,39 @@ class CategoryController {
           }
 
           res.send(200, "ok");
+        }
+        break;
+      case "contractor":
+        {
+          const { contact_number, name } = body;
+          await pg.query(
+            "INSERT INTO contractor (name, contact_number, id_contractor) VALUES ($1, $2, $3)",
+            [name, contact_number, Math.floor(Math.random() * 1000000)]
+          );
+          res.send(200);
+        }
+        break;
+      case "purchase_invoise":
+        {
+          const { contractor, amount, warehouse_manager, material } = body;
+          const id_invoise = Math.floor(Math.random() * 1000000);
+          const date = new Date();
+
+          await pg.query(
+            `INSERT INTO purchase_invoise (id_invoise, id_contractor, date, warehouse_manager, contractor) VALUES ($1, $2, $3, $4, $5)`,
+            [
+              id_invoise,
+              contractor.id,
+              date,
+              warehouse_manager,
+              contractor.value,
+            ]
+          );
+          await pg.query(
+            "INSERT INTO material_in_purchase_invoise (id_invoise, material_name, amount, id_material) VALUES ($1, $2, $3, $4)",
+            [id_invoise, material.value, amount, material.id]
+          );
+          res.send(200);
         }
         break;
       default:
@@ -194,6 +257,36 @@ class CategoryController {
       });
       return newItem;
     });
+    if (req.query.category === "purchase_invoise") {
+      const invoisesWithMaterials = categoryItems.rows.map(async (item) => {
+        const materialPromises = await pg.query(
+          `SELECT * from material_in_purchase_invoise WHERE id_invoise = ${item.id_invoise}`
+        );
+        return [
+          item.contractor,
+          item.id_invoise,
+          materialPromises.rows[0]?.material_name,
+          materialPromises.rows[0]?.amount,
+          item.warehouse_manager,
+        ];
+      });
+      const material = await Promise.all(invoisesWithMaterials);
+      res.send({
+        items: material.sort((a, b) => {
+          if (a[0] > b[0]) return -1;
+          if (a[0] < b[0]) return 1;
+          return 0;
+        }),
+        fields: [
+          { name: "contractor_name" },
+          { name: "invoise_id" },
+          { name: "material_name" },
+          { name: "amount" },
+          { name: "warehouse_manager" },
+        ],
+      });
+      return;
+    }
     res.send({
       items: items.sort((a, b) => {
         if (a[0] > b[0]) return 1;

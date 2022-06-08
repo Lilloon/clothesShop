@@ -6,7 +6,6 @@ class UserController {
     const popular = await pg.query(
       `SELECT * FROM client where id_client='${req.query.id}'`
     );
-    console.log(popular);
     res.send(JSON.stringify(popular.rows[0]));
   }
   async addNewUser(req, res) {
@@ -98,7 +97,6 @@ class UserController {
       return parentPromise.rows;
     });
     const parentsArr = await Promise.all(parentsPromises);
-    console.log(parentsArr);
 
     const items = childs.rows.map((item, index) => {
       return {
