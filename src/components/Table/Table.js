@@ -52,6 +52,7 @@ const Table = ({
                 )}
               </td>
             ))}
+            <td className={styles.delete}> ИЗМЕНИТЬ </td>
             <td
               className={styles.delete}
               onClick={() => {
