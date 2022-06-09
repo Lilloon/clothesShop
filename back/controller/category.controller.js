@@ -105,9 +105,9 @@ class CategoryController {
       case "parent_product":
         {
           const id_product = v4();
-          const queryString = `INSERT INTO parent_product (product_name, amount, id_product) VALUES ($1, $2, $3)`;
-          const { product_name, material } = body;
-          await pg.query(queryString, [product_name, 0, id_product]);
+          const queryString = `INSERT INTO parent_product (product_name, amount, id_product, price) VALUES ($1, $2, $3, $4)`;
+          const { product_name, material, price } = body;
+          await pg.query(queryString, [product_name, 0, id_product, price]);
           const material_row = await pg.query(
             `SELECT id_material from material WHERE material_name = '${material.value}'`
           );
